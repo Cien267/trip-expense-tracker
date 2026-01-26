@@ -61,7 +61,9 @@ export const DefaultLayout = () => {
         )}
       </AnimatePresence>
       <Toaster
+        position="top-center"
         toastOptions={{
+          duration: 2000,
           classNames: {
             error: 'bg-red-50! border-red-200! text-red-900!',
             success: 'bg-green-50! border-green-200! text-green-900!',

@@ -13,6 +13,7 @@ import {
   Gamepad2,
 } from 'lucide-react'
 import { useExpensesQueries } from '@/features/expense/hooks/useExpenseQueries'
+import { Skeleton } from '@/components/ui/skeleton'
 
 const categoryStyles: Record<
   string,
@@ -68,7 +69,7 @@ const travelers = [
     name: 'Cien',
     age: 18,
     gender: 'Nam',
-    role: 'Trưởng đoàn',
+    role: 'Thành viên',
     avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Cien',
   },
   {
@@ -131,9 +132,9 @@ const travelers = [
 
 export const SummaryPage = () => {
   const { useExpensesList } = useExpensesQueries()
-  const { data } = useExpensesList()
+  const { data, isLoading: isLoadingExpenses } = useExpensesList()
   const { useDashboard } = useDashboardQueries()
-  const { data: dashboard } = useDashboard()
+  const { data: dashboard, isLoading: isLoadingDashboard } = useDashboard()
   const totalAmount = dashboard?.data?.totalExpense || 0
 
   const breakdownData = useMemo(() => {
@@ -155,7 +156,7 @@ export const SummaryPage = () => {
   return (
     <div className="space-y-6">
       <div className="sticky top-0 z-10 bg-white/80 backdrop-blur-md border-b">
-        <div className="container mx-auto px-4 h-16 flex items-center justify-between">
+        <div className="container mx-auto px-4 pb-2 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <h1 className="text-xl font-bold text-slate-900">Thống kê</h1>
           </div>
@@ -167,59 +168,72 @@ export const SummaryPage = () => {
           <p className="text-slate-400 text-xs font-bold uppercase tracking-widest">
             Tổng chi tiêu
           </p>
-          <CardTitle className="text-3xl font-black text-slate-900">
-            {totalAmount.toLocaleString()}đ
-          </CardTitle>
+          {isLoadingDashboard ? (
+            <Skeleton className="h-10 w-full"></Skeleton>
+          ) : (
+            <CardTitle className="text-3xl font-black text-slate-900">
+              {totalAmount.toLocaleString()}đ
+            </CardTitle>
+          )}
         </CardHeader>
 
-        <CardContent className="space-y-6 pt-4">
-          <div className="flex h-3 w-full rounded-full overflow-hidden">
-            {breakdownData.map((item, idx) => (
-              <div
-                key={idx}
-                style={{ width: `${item.percentage}%` }}
-                className={`${categoryStyles[item.name]?.barColor || 'bg-slate-300'}`}
-              />
-            ))}
+        {isLoadingExpenses ? (
+          <div className="flex flex-col gap-2 px-6">
+            <Skeleton className="h-10 w-full"></Skeleton>
+            <Skeleton className="h-10 w-full"></Skeleton>
+            <Skeleton className="h-10 w-full"></Skeleton>
+            <Skeleton className="h-10 w-full"></Skeleton>
           </div>
+        ) : (
+          <CardContent className="space-y-6 pt-4">
+            <div className="flex h-3 w-full rounded-full overflow-hidden">
+              {breakdownData.map((item, idx) => (
+                <div
+                  key={idx}
+                  style={{ width: `${item.percentage}%` }}
+                  className={`${categoryStyles[item.name]?.barColor || 'bg-slate-300'}`}
+                />
+              ))}
+            </div>
 
-          <div className="space-y-5">
-            {breakdownData.map((item) => {
-              const style =
-                categoryStyles[item.name] || categoryStyles['Chi phí khác']
-              const Icon = style.icon
+            <div className="space-y-5">
+              {breakdownData.map((item) => {
+                const style =
+                  categoryStyles[item.name] || categoryStyles['Chi phí khác']
+                const Icon = style.icon
 
-              return (
-                <div key={item.name} className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className={`p-2 rounded-2xl ${style.bg}`}>
-                        <Icon size={18} className={style.color} />
+                return (
+                  <div key={item.name} className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <div className={`p-2 rounded-2xl ${style.bg}`}>
+                          <Icon size={18} className={style.color} />
+                        </div>
+                        <span className="font-bold text-slate-700">
+                          {item.name}
+                        </span>
                       </div>
-                      <span className="font-bold text-slate-700">
-                        {item.name}
-                      </span>
+                      <div className="text-right">
+                        <p className="font-bold text-slate-900">
+                          {item.value.toLocaleString()}đ
+                        </p>
+                        <p className="text-[11px] font-medium text-slate-400">
+                          {Math.round(item.percentage)}%
+                        </p>
+                      </div>
                     </div>
-                    <div className="text-right">
-                      <p className="font-bold text-slate-900">
-                        {item.value.toLocaleString()}đ
-                      </p>
-                      <p className="text-[11px] font-medium text-slate-400">
-                        {Math.round(item.percentage)}%
-                      </p>
+                    <div className="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
+                      <div
+                        className={`h-full ${style.barColor}`}
+                        style={{ width: `${item.percentage}%` }}
+                      />
                     </div>
                   </div>
-                  <div className="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
-                    <div
-                      className={`h-full ${style.barColor}`}
-                      style={{ width: `${item.percentage}%` }}
-                    />
-                  </div>
-                </div>
-              )
-            })}
-          </div>
-        </CardContent>
+                )
+              })}
+            </div>
+          </CardContent>
+        )}
       </Card>
 
       <div className="space-y-4 pt-2">

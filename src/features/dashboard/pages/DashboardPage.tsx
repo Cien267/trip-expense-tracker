@@ -30,7 +30,7 @@ export const DashboardPage = () => {
   return (
     <div className="space-y-6">
       <div className="sticky top-0 z-10 bg-white/80 backdrop-blur-md border-b">
-        <div className="container mx-auto px-4 h-16 flex items-center justify-between">
+        <div className="container mx-auto px-4 pb-2 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <h1 className="text-xl font-bold text-slate-900">Tổng quan</h1>
           </div>
@@ -70,7 +70,9 @@ export const DashboardPage = () => {
             <Wallet className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-blue-500">
+            <div
+              className={`text-2xl font-bold ${dashboardData.balance > 0 ? 'text-blue-500' : 'text-red-500'}`}
+            >
               {dashboardData.balance.toLocaleString()}đ
             </div>
           </CardContent>

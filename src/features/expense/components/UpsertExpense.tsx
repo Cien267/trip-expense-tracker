@@ -148,7 +148,7 @@ export function UpsertExpense({ initialData, onClose }: UpsertExpenseProps) {
         animate={{ y: 0 }}
         exit={{ y: '100%' }}
         transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-        className="w-full sm:max-w-md bg-white rounded-t-[32px] sm:rounded-[32px] flex flex-col max-h-[92vh] shadow-2xl overflow-hidden"
+        className="w-full sm:max-w-md bg-white rounded-t-[32px] sm:rounded-[32px] flex flex-col max-h-[95vh] shadow-2xl overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="p-6 pb-4 flex items-center justify-between bg-white shrink-0 border-b sm:border-none z-10">
