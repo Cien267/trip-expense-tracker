@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Outlet, NavLink } from 'react-router-dom'
 import {
   Home,
@@ -12,11 +12,46 @@ import { cn } from '@/lib/utils'
 import { UpsertExpense } from '@/features/expense/components/UpsertExpense'
 import { Toaster } from 'sonner'
 import { AnimatePresence } from 'framer-motion'
+import { useOfflineSync } from '@/features/expense/hooks/useOfflineSync'
 
 export const DefaultLayout = () => {
   const [showAddModal, setShowAddModal] = useState(false)
+  const { mutate: syncOfflineData } = useOfflineSync()
+  const [isOnline, setIsOnline] = useState(navigator.onLine)
+
+  useEffect(() => {
+    const updateStatus = () => setIsOnline(navigator.onLine)
+    window.addEventListener('online', updateStatus)
+    window.addEventListener('offline', updateStatus)
+    return () => {
+      window.removeEventListener('online', updateStatus)
+      window.removeEventListener('offline', updateStatus)
+    }
+  }, [])
+
+  useEffect(() => {
+    const handleOnline = () => {
+      setTimeout(() => {
+        if (navigator.onLine) {
+          syncOfflineData()
+        }
+      }, 1000)
+    }
+
+    window.addEventListener('online', handleOnline)
+    if (navigator.onLine) {
+      syncOfflineData()
+    }
+    return () => window.removeEventListener('online', handleOnline)
+  }, [syncOfflineData])
+
   return (
     <div className="flex flex-col min-h-screen bg-white font-sans antialiased pb-24">
+      {!isOnline && (
+        <div className="bg-amber-500 text-white text-[10px] text-center py-1 font-bold">
+          BẠN ĐANG Ở CHẾ ĐỘ NGOẠI TUYẾN - DỮ LIỆU SẼ ĐƯỢC LƯU TẠM
+        </div>
+      )}
       <main className="flex-1 w-full max-w-full mx-auto p-4 md:p-6">
         <Outlet />
       </main>

@@ -22,6 +22,8 @@ import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { triggerHaptic } from '@/lib/utils'
 import { motion } from 'framer-motion'
+import { idb } from '../lib/idb'
+import { toast } from 'sonner'
 
 interface UpsertExpenseProps {
   initialData?: Expense | null
@@ -123,14 +125,25 @@ export function UpsertExpense({ initialData, onClose }: UpsertExpenseProps) {
   }
 
   const onSubmit = async (data: CreateExpenseInput) => {
+    const isOnline = navigator.onLine
     try {
       if (initialData?.id) {
         await updateExpenseAsync({
           ...data,
           id: initialData.id,
         } as UpdateExpenseInput)
-      } else {
+        onClose()
+        return
+      }
+      if (isOnline) {
         await createExpenseAsync(data)
+      } else {
+        await idb.expenses.add({
+          ...data,
+          synced: isOnline ? 1 : 0,
+          createdAt: Date.now(),
+        })
+        toast.info('Đã lưu tạm (Offline). Dữ liệu sẽ đồng bộ khi có mạng!')
       }
       onClose()
     } catch (error) {

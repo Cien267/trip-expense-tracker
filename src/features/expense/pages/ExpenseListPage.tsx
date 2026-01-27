@@ -7,15 +7,23 @@ import { ExpenseItem } from '../components/ExpenseItem'
 import type { Expense } from '../types'
 import { useExpensesQueries } from '../hooks/useExpenseQueries'
 import { AnimatePresence } from 'framer-motion'
+import { useLiveQuery } from 'dexie-react-hooks'
+import { idb } from '../lib/idb'
 
 export const ExpenseListPage = () => {
   const { useExpensesList } = useExpensesQueries()
   const { data, isLoading } = useExpensesList()
+  const offlineExpenses = useLiveQuery(
+    () => idb.expenses.where('synced').equals(0).toArray(),
+    []
+  )
 
   const groupedExpenses = useMemo(() => {
     const groups: Record<string, Expense[]> = {}
-    const expenses = data?.data || []
-    expenses.forEach((expense: Expense) => {
+    const apiExpenses = data?.data || []
+    const allExpenses = [...(offlineExpenses || []), ...apiExpenses]
+
+    allExpenses.forEach((expense: any) => {
       const dateKey = format(new Date(expense.date), 'yyyy-MM-dd')
       if (!groups[dateKey]) {
         groups[dateKey] = []
@@ -26,7 +34,7 @@ export const ExpenseListPage = () => {
     return Object.entries(groups).sort(
       (a, b) => new Date(b[0]).getTime() - new Date(a[0]).getTime()
     )
-  }, [data])
+  }, [data, offlineExpenses])
 
   if (isLoading) {
     return (
@@ -65,7 +73,16 @@ export const ExpenseListPage = () => {
                   </h2>
                   <div className="space-y-3">
                     {items.map((expense) => (
-                      <ExpenseItem key={expense.id} expense={expense} />
+                      <div key={expense.id} className="relative">
+                        {(expense as any).synced === 0 && (
+                          <div className="absolute top-1 right-4 z-10">
+                            <span className="bg-amber-100 text-amber-700 text-[9px] font-black px-2 py-0.5 rounded-full border border-amber-200 shadow-sm">
+                              CHỜ ĐỒNG BỘ
+                            </span>
+                          </div>
+                        )}
+                        <ExpenseItem expense={expense} />
+                      </div>
                     ))}
                   </div>
                 </div>
