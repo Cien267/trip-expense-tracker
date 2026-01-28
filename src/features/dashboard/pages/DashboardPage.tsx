@@ -30,7 +30,7 @@ export const DashboardPage = () => {
   return (
     <div className="space-y-6">
       <div className="sticky top-0 z-10 bg-white/80 backdrop-blur-md border-b">
-        <div className="container mx-auto px-4 pb-2 flex items-center justify-between">
+        <div className="container mx-auto px-4 py-2 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <h1 className="text-xl font-bold text-slate-900">Tổng quan</h1>
           </div>

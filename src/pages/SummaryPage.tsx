@@ -1,8 +1,6 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { useDashboardQueries } from '@/features/dashboard/hooks/useDashboardQueries'
-import { Badge } from '@/components/ui/badge'
 import {
   Home,
   Utensils,
@@ -14,6 +12,9 @@ import {
 } from 'lucide-react'
 import { useExpensesQueries } from '@/features/expense/hooks/useExpenseQueries'
 import { Skeleton } from '@/components/ui/skeleton'
+import { MemberList } from '@/features/member/components/MemberList'
+import { Itinerary } from '@/features/itinerary/components/Itinerary'
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 
 const categoryStyles: Record<
   string,
@@ -63,73 +64,6 @@ const categoryStyles: Record<
   },
 }
 
-const travelers = [
-  {
-    id: '1',
-    name: 'Cien',
-    age: 18,
-    gender: 'Nam',
-    role: 'Thành viên',
-    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Cien',
-  },
-  {
-    id: '2',
-    name: 'Thái',
-    age: 24,
-    gender: 'Nam',
-    role: 'Thành viên',
-    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Thai',
-  },
-  {
-    id: '3',
-    name: 'Hưng',
-    age: 24,
-    gender: 'Nam',
-    role: 'Thành viên',
-    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Hung',
-  },
-  {
-    id: '4',
-    name: 'Đức',
-    age: 22,
-    gender: 'Nam',
-    role: 'Thành viên',
-    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Duc',
-  },
-  {
-    id: '5',
-    name: 'Long',
-    age: 23,
-    gender: 'Nam',
-    role: 'Thành viên',
-    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Long',
-  },
-  {
-    id: '6',
-    name: 'Huy',
-    age: 26,
-    gender: 'Nam',
-    role: 'Thành viên',
-    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Huy',
-  },
-  {
-    id: '7',
-    name: 'Bích',
-    age: 23,
-    gender: 'Nữ',
-    role: 'Thành viên',
-    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Bich',
-  },
-  {
-    id: '8',
-    name: 'Hoa',
-    age: 23,
-    gender: 'Nữ',
-    role: 'Thành viên',
-    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Hoa',
-  },
-]
-
 export const SummaryPage = () => {
   const { useExpensesList } = useExpensesQueries()
   const { data, isLoading: isLoadingExpenses } = useExpensesList()
@@ -153,10 +87,12 @@ export const SummaryPage = () => {
       .sort((a, b) => b.value - a.value)
   }, [data, totalAmount])
 
+  const [activeTab, setActiveTab] = useState('itinerary')
+
   return (
     <div className="space-y-6">
       <div className="sticky top-0 z-10 bg-white/80 backdrop-blur-md border-b">
-        <div className="container mx-auto px-4 pb-2 flex items-center justify-between">
+        <div className="container mx-auto px-4 py-2 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <h1 className="text-xl font-bold text-slate-900">Thống kê</h1>
           </div>
@@ -235,41 +171,20 @@ export const SummaryPage = () => {
           </CardContent>
         )}
       </Card>
+      <Tabs value={activeTab} onValueChange={setActiveTab}>
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger value="itinerary">Lịch trình</TabsTrigger>
+          <TabsTrigger value="member">Thành viên</TabsTrigger>
+        </TabsList>
 
-      <div className="space-y-4 pt-2">
-        <h2 className="text-lg font-bold text-slate-900 px-1">
-          Thành viên chuyến đi
-        </h2>
-        <div className="grid gap-3">
-          {travelers.map((person) => (
-            <div
-              key={person.id}
-              className="flex items-center justify-between p-4 bg-white rounded-[24px] shadow-sm border border-slate-50"
-            >
-              <div className="flex items-center gap-4">
-                <Avatar className="h-12 w-12 rounded-3xl border-2 border-slate-100">
-                  <AvatarImage src={person.avatar} />
-                  <AvatarFallback>{person.name[0]}</AvatarFallback>
-                </Avatar>
-                <div>
-                  <p className="text-base font-bold text-slate-900">
-                    {person.name}
-                  </p>
-                  <p className="text-xs font-medium text-slate-400">
-                    {person.gender} • {person.age} tuổi
-                  </p>
-                </div>
-              </div>
-              <Badge
-                variant="secondary"
-                className="bg-slate-100 text-slate-600 rounded-full px-3 py-1 text-[10px] font-bold border-none"
-              >
-                {person.role.toUpperCase()}
-              </Badge>
-            </div>
-          ))}
-        </div>
-      </div>
+        <TabsContent value="itinerary" className="space-y-4 mt-6">
+          <Itinerary />
+        </TabsContent>
+
+        <TabsContent value="member" className="mt-6">
+          <MemberList />
+        </TabsContent>
+      </Tabs>
     </div>
   )
 }
