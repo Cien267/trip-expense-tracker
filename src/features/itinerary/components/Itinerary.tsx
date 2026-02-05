@@ -164,7 +164,7 @@ export const Itinerary = () => {
         date: '08/03/2026',
         title: 'Mèo Vạc → Hà Giang → Hà Nội',
         mapLink:
-          "https://www.google.com/maps/dir/L%C3%A0ng+H'M%C3%B4ng+P%E1%BA%A3+Vi,+Th%C3%B4n,+H%E1%BA%A1,+P%E1%BA%A3+Vi,+M%C3%A8o+V%E1%BA%A1c,+H%C3%A0+Giang,+Vi%E1%BB%87t+Nam/S%E1%BB%A7ng+Tr%C3%A1i+B%C4%91%C6%B0%E1%BB%9Dng+ch%E1%BB%AF+M,+4745%2B8XG,+TL176,+S%E1%BB%A7ng+Tr%C3%A1i,+%C4%90%E1%BB%93ng+V%C4%83n,+H%C3%A0+Giang,+Vi%E1%BB%87t+Nam/H%C3%A0+Giang+c%E1%BB%99t+m%E1%BB%91c+s%E1%BB%91+0,+39%2F6+An+C%C6%B0,+T%E1%BB%95+D%C3%A2n+Ph%E1%BB%91+S%E1%BB%91+6,+H%C3%A0+Giang,+Vi%E1%BB%87t+Nam/@23.0801879,104.9819824,12.18z/data=!4m20!4m19!1m5!1m1!1s0x36cbdd5ca0cd3c8d:0xf6339e8ead072b6!2m2!1d105.4153661!2d23.2058469!1m5!1m1!1s0x36cbedc5956bfbff:0x396fb520362b8dcd!2m2!1d105.25995!2d23.1058222!1m5!1m1!1s0x36cc7924a35684b7:0xe447e169aee981b6!2m2!1d104.9841875!2d22.8274375!3e0?entry=tts&g_ep=EgoyMDI2MDEyNS4wKgBIAVAD&skid=40c1dc1d-7824-4d44-9c7a-a90e1990a7b3",
+          "https://www.google.com/maps/dir/L%C3%A0ng+H'M%C3%B4ng+P%E1%BA%A3+Vi,+Th%C3%B4n,+H%E1%BA%A1,+P%E1%BA%A3+Vi,+M%C3%A8o+V%E1%BA%A1c,+H%C3%A0+Giang,+Vi%E1%BB%87t+Nam/S%E1%BB%A7ng+Tr%C3%A1i+B%C4%91%C6%B0%E1%BB%9Dng+ch%E1%BB%AF+M,+4745%2B8XG,+TL176,+S%E1%BB%A7ng+Tr%C3%A1i,+%C4%90%E1%BB%93ng+V%C4%83n,+H%C3%A0+Giang,+Vi%E1%BB%87t+Nam/Beautiful+view,+V6GW%2B3J,+Minh+S%C6%A1n,+B%E1%BA%AFc+M%C3%AA,+H%C3%A0+Giang,+Vi%E1%BB%87t+Nam/H%C3%A0+Giang+c%E1%BB%99t+m%E1%BB%91c+s%E1%BB%91+0,+39%2F6+An+C%C6%B0,+T%E1%BB%95+D%C3%A2n+Ph%E1%BB%91+S%E1%BB%91+6,+H%C3%A0+Giang,+Vi%E1%BB%87t+Nam/@22.8740515,105.1813,13.35z/data=!4m26!4m25!1m5!1m1!1s0x36cbdd5ca0cd3c8d:0xf6339e8ead072b6!2m2!1d105.4153661!2d23.2058469!1m5!1m1!1s0x36cbedc5956bfbff:0x396fb520362b8dcd!2m2!1d105.25995!2d23.1058222!1m5!1m1!1s0x36cb91002c449e29:0x5d72515254621761!2m2!1d105.2465649!2d22.8751793!1m5!1m1!1s0x36cc7924a35684b7:0xe447e169aee981b6!2m2!1d104.9841875!2d22.8274375!3e0?entry=ttu&g_ep=EgoyMDI2MDIwMS4wIKXMDSoASAFQAw%3D%3D",
         activities: [
           {
             type: 'Khám phá',
@@ -254,7 +254,7 @@ export const Itinerary = () => {
               {day.activities.map((act: any, aIdx: number) => (
                 <div key={aIdx} className="relative">
                   <div
-                    className={`absolute -left-[45px] top-1 w-6 h-6 rounded-full border-4 border-slate-50 flex items-center justify-center shadow-sm ${getBadgeColor(act.type)}`}
+                    className={`absolute -left-11.25 top-1 w-6 h-6 rounded-full border-4 border-slate-50 flex items-center justify-center shadow-sm ${getBadgeColor(act.type)}`}
                   >
                     {getIcon(act.type)}
                   </div>

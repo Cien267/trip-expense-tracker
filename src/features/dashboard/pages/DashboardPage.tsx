@@ -1,12 +1,10 @@
 import { useDashboardQueries } from '@/features/dashboard/hooks/useDashboardQueries'
 import { Skeleton } from '@/components/ui/skeleton'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent } from '@/components/ui/card'
 import { Wallet, TrendingDown, TrendingUp } from 'lucide-react'
-import { ExpenseItem } from '@/features/expense/components/ExpenseItem'
-import { useNavigate } from 'react-router-dom'
+import { WeatherCard } from '@/features/dashboard/components/WeatherCard'
 
 export const DashboardPage = () => {
-  const navigate = useNavigate()
   const { useDashboard } = useDashboardQueries()
   const { data, isLoading } = useDashboard()
 
@@ -36,70 +34,55 @@ export const DashboardPage = () => {
           </div>
         </div>
       </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-            <CardTitle className="text-sm font-medium">Tổng thu</CardTitle>
-            <TrendingUp className="h-4 w-4 text-green-600" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-green-600">
-              {dashboardData.totalIncome.toLocaleString()}đ
+      <WeatherCard />
+      <div className="grid grid-cols-2 gap-4">
+        <Card className="col-span-2 border-none shadow-sm bg-white overflow-hidden relative">
+          <CardContent className="p-5">
+            <div className="flex items-center justify-between mb-2">
+              <p className="text-sm font-semibold text-slate-500">
+                Số dư hiện tại
+              </p>
+              <Wallet className="w-5 h-5 text-blue-500" />
             </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-            <CardTitle className="text-sm font-medium">Tổng chi</CardTitle>
-            <TrendingDown className="h-4 w-4 text-destructive" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-destructive">
-              {dashboardData.totalExpense.toLocaleString()}đ
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-            <CardTitle className="text-sm font-medium">
-              Số dư hiện tại
-            </CardTitle>
-            <Wallet className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
             <div
-              className={`text-2xl font-bold ${dashboardData.balance > 0 ? 'text-blue-500' : 'text-red-500'}`}
+              className={`text-3xl font-bold ${dashboardData.balance > 0 ? 'text-blue-500' : 'text-red-500'}`}
             >
               {dashboardData.balance.toLocaleString()}đ
             </div>
           </CardContent>
         </Card>
-      </div>
 
-      <div className="space-y-4">
-        <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold">Gần đây</h2>
-          <button
-            className="text-sm text-primary font-medium hover:underline"
-            onClick={() => navigate('/expenses')}
-          >
-            Xem tất cả
-          </button>
-        </div>
-        <div className="grid gap-3">
-          {dashboardData.recentExpenses.length > 0 ? (
-            dashboardData.recentExpenses.map((expense) => (
-              <ExpenseItem key={expense.id} expense={expense} />
-            ))
-          ) : (
-            <div className="text-center py-10 border rounded-lg border-dashed">
-              <p className="text-muted-foreground">Chưa có chi tiêu nào</p>
+        <Card className="border-none shadow-sm bg-emerald-50/50">
+          <CardContent className="p-4">
+            <div className="flex flex-col gap-1">
+              <div className="p-2 w-fit rounded-lg bg-emerald-100 text-emerald-600 mb-2">
+                <TrendingUp className="w-4 h-4" />
+              </div>
+              <p className="text-xs font-bold text-slate-500 uppercase">
+                Tổng thu
+              </p>
+              <div className="text-lg font-bold text-emerald-600">
+                + {dashboardData.totalIncome.toLocaleString()}
+              </div>
             </div>
-          )}
-        </div>
+          </CardContent>
+        </Card>
+
+        <Card className="border-none shadow-sm bg-red-50/50">
+          <CardContent className="p-4">
+            <div className="flex flex-col gap-1">
+              <div className="p-2 w-fit rounded-lg bg-red-100 text-red-600 mb-2">
+                <TrendingDown className="w-4 h-4" />
+              </div>
+              <p className="text-xs font-bold text-slate-500 uppercase">
+                Tổng chi
+              </p>
+              <div className="text-lg font-bold text-red-600">
+                - {dashboardData.totalExpense.toLocaleString()}
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   )
