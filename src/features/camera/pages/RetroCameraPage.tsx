@@ -141,11 +141,7 @@ export const RetroCameraPage = () => {
     try {
       // Yêu cầu camera sau với cấu hình linh hoạt hơn
       const constraints = {
-        video: {
-          facingMode: 'environment',
-          width: { ideal: 1280 },
-          height: { ideal: 720 },
-        },
+        video: true,
         audio: false,
       }
 
