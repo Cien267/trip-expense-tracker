@@ -137,17 +137,36 @@ export const RetroCameraPage = () => {
   }
 
   const startCamera = async () => {
+    fetchLocation()
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: 'environment' },
-      })
+      // Yêu cầu camera sau với cấu hình linh hoạt hơn
+      const constraints = {
+        video: {
+          facingMode: 'environment',
+          width: { ideal: 1280 },
+          height: { ideal: 720 },
+        },
+        audio: false,
+      }
+
+      const stream = await navigator.mediaDevices.getUserMedia(constraints)
+
       if (videoRef.current) {
         videoRef.current.srcObject = stream
-        setIsStreaming(true)
+
+        // Đảm bảo video thực sự phát sau khi load xong metadata
+        videoRef.current.onloadedmetadata = () => {
+          videoRef.current
+            ?.play()
+            .then(() => setIsStreaming(true))
+            .catch((e) => console.error('Lỗi tự động phát:', e))
+        }
       }
-    } catch (err: any) {
-      console.error('Error accessing camera:', err)
-      alert('Vui lòng cấp quyền Camera')
+    } catch (err) {
+      console.error('Lỗi Camera:', err)
+      alert(
+        'Không thể mở camera. Hãy đảm bảo bạn không mở camera ở ứng dụng khác.'
+      )
     }
   }
 
@@ -170,7 +189,8 @@ export const RetroCameraPage = () => {
             <video
               ref={videoRef}
               autoPlay
-              playsInline
+              muted // Bắt buộc cho autoPlay trên một số trình duyệt
+              playsInline // Quan trọng nhất cho iOS/PWA
               className="w-full h-full object-cover transition-all duration-500"
               style={{ filter: FILM_STOCKS[currentFilmIdx].filter }}
             />
