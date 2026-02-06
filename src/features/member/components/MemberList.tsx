@@ -57,7 +57,7 @@ export const MemberList = () => {
       age: 23,
       gender: 'Nữ',
       role: 'Thành viên',
-      avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Bich',
+      avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Marry',
     },
     {
       id: '8',

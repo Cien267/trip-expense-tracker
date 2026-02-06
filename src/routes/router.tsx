@@ -10,7 +10,20 @@ const ExpenseListPage = lazy(
   () => import('@/features/expense/pages/ExpenseListPage')
 )
 const IncomePage = lazy(() => import('@/features/income/pages/IncomePage'))
-const SummaryPage = lazy(() => import('@/pages/SummaryPage'))
+const MorePage = lazy(() => import('@/pages/MorePage'))
+const ItineraryPage = lazy(
+  () => import('@/features/itinerary/pages/ItineraryPage')
+)
+const MembersPage = lazy(() => import('@/features/member/pages/MembersPage'))
+const ChecklistPage = lazy(
+  () => import('@/features/checklist/pages/ChecklistPage')
+)
+const LanguagePage = lazy(
+  () => import('@/features/language/pages/LanguagePage')
+)
+const RetroCameraPage = lazy(
+  () => import('@/features/camera/pages/RetroCameraPage')
+)
 const NotFoundPage = lazy(() => import('@/pages/NotFoundPage'))
 
 export const router = createBrowserRouter([
@@ -41,14 +54,6 @@ export const router = createBrowserRouter([
             ),
           },
           {
-            path: '/summary',
-            element: (
-              <SuspenseWrapper>
-                <SummaryPage />
-              </SuspenseWrapper>
-            ),
-          },
-          {
             path: '/incomes',
             element: (
               <SuspenseWrapper>
@@ -56,9 +61,57 @@ export const router = createBrowserRouter([
               </SuspenseWrapper>
             ),
           },
+          {
+            path: '/more',
+            element: (
+              <SuspenseWrapper>
+                <MorePage />
+              </SuspenseWrapper>
+            ),
+          },
+          {
+            path: '/itinerary',
+            element: (
+              <SuspenseWrapper>
+                <ItineraryPage />
+              </SuspenseWrapper>
+            ),
+          },
+          {
+            path: '/members',
+            element: (
+              <SuspenseWrapper>
+                <MembersPage />
+              </SuspenseWrapper>
+            ),
+          },
+          {
+            path: '/checklist',
+            element: (
+              <SuspenseWrapper>
+                <ChecklistPage />
+              </SuspenseWrapper>
+            ),
+          },
+          {
+            path: '/languages',
+            element: (
+              <SuspenseWrapper>
+                <LanguagePage />
+              </SuspenseWrapper>
+            ),
+          },
         ],
       },
     ],
+  },
+  {
+    path: '/retro-camera',
+    element: (
+      <SuspenseWrapper>
+        <RetroCameraPage />
+      </SuspenseWrapper>
+    ),
   },
   {
     path: '/404',

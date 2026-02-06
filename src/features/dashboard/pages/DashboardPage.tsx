@@ -3,6 +3,8 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { Card, CardContent } from '@/components/ui/card'
 import { Wallet, TrendingDown, TrendingUp } from 'lucide-react'
 import { WeatherCard } from '@/features/dashboard/components/WeatherCard'
+import { DepartureCountdown } from '@/features/dashboard/components/DepartureCountdown'
+import { ExpenseByCategory } from '@/features/expense/components/ExpenseByCategory'
 
 export const DashboardPage = () => {
   const { useDashboard } = useDashboardQueries()
@@ -27,7 +29,7 @@ export const DashboardPage = () => {
 
   return (
     <div className="space-y-6">
-      <div className="sticky top-0 z-10 bg-white/80 backdrop-blur-md border-b">
+      <div className="sticky top-0 z-9999 bg-white/80 backdrop-blur-md border-b">
         <div className="container mx-auto px-4 py-2 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <h1 className="text-xl font-bold text-slate-900">Tổng quan</h1>
@@ -35,6 +37,7 @@ export const DashboardPage = () => {
         </div>
       </div>
       <WeatherCard />
+      <DepartureCountdown />
       <div className="grid grid-cols-2 gap-4">
         <Card className="col-span-2 border-none shadow-sm bg-white overflow-hidden relative">
           <CardContent className="p-5">
@@ -84,6 +87,7 @@ export const DashboardPage = () => {
           </CardContent>
         </Card>
       </div>
+      <ExpenseByCategory />
     </div>
   )
 }

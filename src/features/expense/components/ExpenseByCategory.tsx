@@ -1,5 +1,5 @@
-import { useMemo, useState } from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { useMemo } from 'react'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { useDashboardQueries } from '@/features/dashboard/hooks/useDashboardQueries'
 import {
   Home,
@@ -12,9 +12,6 @@ import {
 } from 'lucide-react'
 import { useExpensesQueries } from '@/features/expense/hooks/useExpenseQueries'
 import { Skeleton } from '@/components/ui/skeleton'
-import { MemberList } from '@/features/member/components/MemberList'
-import { Itinerary } from '@/features/itinerary/components/Itinerary'
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 
 const categoryStyles: Record<
   string,
@@ -64,7 +61,7 @@ const categoryStyles: Record<
   },
 }
 
-export const SummaryPage = () => {
+export const ExpenseByCategory = () => {
   const { useExpensesList } = useExpensesQueries()
   const { data, isLoading: isLoadingExpenses } = useExpensesList()
   const { useDashboard } = useDashboardQueries()
@@ -87,30 +84,14 @@ export const SummaryPage = () => {
       .sort((a, b) => b.value - a.value)
   }, [data, totalAmount])
 
-  const [activeTab, setActiveTab] = useState('itinerary')
-
   return (
     <div className="space-y-6">
-      <div className="sticky top-0 z-10 bg-white/80 backdrop-blur-md border-b">
-        <div className="container mx-auto px-4 py-2 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <h1 className="text-xl font-bold text-slate-900">Thống kê</h1>
-          </div>
-        </div>
-      </div>
-
       <Card className="rounded-[28px] border-none shadow-sm bg-white overflow-hidden">
         <CardHeader className="pb-2">
           <p className="text-slate-400 text-xs font-bold uppercase tracking-widest">
-            Tổng chi tiêu
+            Phân bổ chi tiêu theo danh mục
           </p>
-          {isLoadingDashboard ? (
-            <Skeleton className="h-10 w-full"></Skeleton>
-          ) : (
-            <CardTitle className="text-3xl font-black text-slate-900">
-              {totalAmount.toLocaleString()}đ
-            </CardTitle>
-          )}
+          {isLoadingDashboard && <Skeleton className="h-10 w-full"></Skeleton>}
         </CardHeader>
 
         {isLoadingExpenses ? (
@@ -171,22 +152,6 @@ export const SummaryPage = () => {
           </CardContent>
         )}
       </Card>
-      <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="itinerary">Lịch trình</TabsTrigger>
-          <TabsTrigger value="member">Thành viên</TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="itinerary" className="space-y-4 mt-6">
-          <Itinerary />
-        </TabsContent>
-
-        <TabsContent value="member" className="mt-6">
-          <MemberList />
-        </TabsContent>
-      </Tabs>
     </div>
   )
 }
-
-export default SummaryPage

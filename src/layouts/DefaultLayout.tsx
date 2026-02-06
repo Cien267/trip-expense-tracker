@@ -4,8 +4,8 @@ import {
   Home,
   ReceiptText,
   Plus,
-  BarChart2,
   BanknoteArrowUp,
+  MoreHorizontal,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
@@ -60,9 +60,9 @@ export const DefaultLayout = () => {
         <div className="max-w-full mx-auto lg:px-10 flex items-center justify-between relative">
           <NavIcon to="/dashboard" icon={<Home size={24} />} label="Home" />
           <NavIcon
-            to="/summary"
-            icon={<BarChart2 size={24} />}
-            label="Thống kê"
+            to="/expenses"
+            icon={<ReceiptText size={24} />}
+            label="Khoản Chi"
           />
 
           <div className="relative -top-8 px-2">
@@ -76,14 +76,15 @@ export const DefaultLayout = () => {
           </div>
 
           <NavIcon
-            to="/expenses"
-            icon={<ReceiptText size={24} />}
-            label="Khoản Chi"
-          />
-          <NavIcon
             to="/incomes"
             icon={<BanknoteArrowUp size={24} />}
             label="Khoản thu"
+          />
+
+          <NavIcon
+            to="/more"
+            icon={<MoreHorizontal size={24} />}
+            label="Thêm"
           />
         </div>
       </nav>

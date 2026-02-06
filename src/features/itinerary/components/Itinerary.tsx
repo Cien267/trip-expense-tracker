@@ -6,6 +6,7 @@ import {
   Camera,
   Utensils,
   Clock,
+  CalendarDays,
 } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -220,13 +221,14 @@ export const Itinerary = () => {
   return (
     <div className="max-w-full mx-auto  min-h-screen pb-20 font-sans">
       <Badge className="w-full text-sm" variant="info">
+        <CalendarDays></CalendarDays>
         {trip.startDate} — {trip.endDate}
       </Badge>
 
       <div className="px-4 mt-6 space-y-10">
         {days.map((day: any, dIdx: number) => (
           <div key={dIdx} className="relative">
-            <div className="sticky top-0 z-10 bg-slate-50/95 backdrop-blur py-3 px-1 rounded-sm mb-4 flex items-center justify-between">
+            <div className="sticky top-0 z-9999 bg-slate-50/95 backdrop-blur py-3 px-1 rounded-sm mb-4 flex items-center justify-between">
               <div className="flex items-baseline gap-2">
                 <span className="text-2xl font-black text-slate-400">
                   0{day.day}
