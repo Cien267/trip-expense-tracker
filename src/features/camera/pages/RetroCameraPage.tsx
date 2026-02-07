@@ -137,32 +137,26 @@ export const RetroCameraPage = () => {
   }
 
   const startCamera = async () => {
-    fetchLocation()
     try {
-      // Yêu cầu camera sau với cấu hình linh hoạt hơn
-      const constraints = {
-        video: true,
-        audio: false,
-      }
-
-      const stream = await navigator.mediaDevices.getUserMedia(constraints)
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: {
+          facingMode: { ideal: 'environment' }, // Dùng ideal thay vì exact
+        },
+      })
 
       if (videoRef.current) {
         videoRef.current.srcObject = stream
 
-        // Đảm bảo video thực sự phát sau khi load xong metadata
-        videoRef.current.onloadedmetadata = () => {
-          videoRef.current
-            ?.play()
-            .then(() => setIsStreaming(true))
-            .catch((e) => console.error('Lỗi tự động phát:', e))
+        // Force play ngay lập tức
+        try {
+          await videoRef.current.play()
+          setIsStreaming(true)
+        } catch (playError) {
+          console.error('Play error:', playError)
         }
       }
-    } catch (err) {
-      console.error('Lỗi Camera:', err)
-      alert(
-        'Không thể mở camera. Hãy đảm bảo bạn không mở camera ở ứng dụng khác.'
-      )
+    } catch (err: any) {
+      alert('Lỗi truy cập: ' + err.name) // Nó sẽ hiện NotAllowedError hoặc NotFoundError
     }
   }
 
