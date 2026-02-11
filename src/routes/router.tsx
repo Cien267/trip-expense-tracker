@@ -21,8 +21,8 @@ const ChecklistPage = lazy(
 const LanguagePage = lazy(
   () => import('@/features/language/pages/LanguagePage')
 )
-const RetroCameraPage = lazy(
-  () => import('@/features/camera/pages/RetroCameraPage')
+const FilmEditorPage = lazy(
+  () => import('@/features/film-editor/pages/FilmEditorPage')
 )
 const NotFoundPage = lazy(() => import('@/pages/NotFoundPage'))
 
@@ -106,10 +106,10 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    path: '/retro-camera',
+    path: '/film-editor',
     element: (
       <SuspenseWrapper>
-        <RetroCameraPage />
+        <FilmEditorPage />
       </SuspenseWrapper>
     ),
   },

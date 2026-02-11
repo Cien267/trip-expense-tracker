@@ -56,11 +56,11 @@ const MorePage = () => {
       groupName: 'Tính năng',
       items: [
         {
-          id: 'camera',
-          title: 'Retro Camera',
+          id: 'film-editor',
+          title: 'Film Editor',
           icon: <Camera className="w-5 h-5 text-gray-500" />,
           description: 'Ghi lại những bức ảnh retro, vintage đầy hoài niệm',
-          route: '/retro-camera',
+          route: '/film-editor',
         },
       ],
     },
