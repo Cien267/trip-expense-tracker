@@ -10,7 +10,10 @@ export const IncomePage = () => {
   const { useIncomesList } = useIncomesQueries()
   const { data, isLoading } = useIncomesList()
 
-  const incomes = useMemo(() => data?.data || [], [data])
+  const incomes = useMemo(
+    () => data?.data.sort((a: any, b: any) => a.index - b.index) || [],
+    [data]
+  )
 
   const totalIncome = useMemo(() => {
     return incomes.reduce((sum, item) => sum + item.amount, 0)
