@@ -121,13 +121,13 @@ const VintageDiary = () => {
           </p>
         </div>
         <div className="flex gap-4 items-center">
-          <button
+          {/* <button
             onClick={exportImage}
             className="p-2 bg-[#4a3a2a] text-[#f4f1ea] rounded-full shadow-lg active:scale-90 transition-all"
             title="Lưu thành ảnh"
           >
             <Download size={20} />
-          </button>
+          </button> */}
           <div className="relative">
             <Award
               size={32}
