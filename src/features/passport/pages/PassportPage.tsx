@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Camera, Trash2, Download, Award, Navigation, X } from 'lucide-react'
-import { toPng } from 'html-to-image'
+import { Camera, Trash2, Award, Navigation, X } from 'lucide-react'
 import { db, type StampEntry } from '../lib/idb'
 
 const CHECKPOINTS = [
@@ -20,8 +19,6 @@ const VintageDiary = () => {
   const [activePoint, setActivePoint] = useState<
     (typeof CHECKPOINTS)[0] | null
   >(null)
-  const [exportImageUri, setExportImageUri] = useState<string | null>(null)
-  const [isExporting, setIsExporting] = useState(false)
   const diaryRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -77,57 +74,21 @@ const VintageDiary = () => {
     }
   }
 
-  const exportImage = async () => {
-    if (diaryRef.current === null) return
-    setIsExporting(true)
-
-    try {
-      const originalHeight = diaryRef.current.scrollHeight
-      const originalWidth = diaryRef.current.scrollWidth
-
-      const dataUrl = await toPng(diaryRef.current, {
-        cacheBust: true,
-        pixelRatio: 2,
-        height: originalHeight,
-        width: originalWidth,
-        style: {
-          overflow: 'visible',
-          height: `${originalHeight}px`,
-          width: `${originalWidth}px`,
-        },
-      })
-
-      setExportImageUri(dataUrl)
-    } catch (err) {
-      console.error('Lỗi render ảnh:', err)
-      alert('Không thể tạo ảnh, bạn hãy thử lại nhé!')
-    } finally {
-      setIsExporting(false)
-    }
-  }
-
   const completedCount = Object.keys(localStamps).length
 
   return (
     <div className="fixed inset-0 bg-[#d9d2c5] text-[#4a3a2a] z-[140] flex flex-col font-serif overflow-hidden">
       <div className="absolute inset-0 opacity-25 pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/paper.png')]" />
-      <div className="relative p-6 pt-12 flex justify-between items-center bg-[#f4f1ea]/80 backdrop-blur-md border-b border-[#4a3a2a]/10">
+      <div className="relative p-6 flex justify-between items-center bg-[#f4f1ea]/80 backdrop-blur-md border-b border-[#4a3a2a]/10">
         <div>
           <h1 className="text-xl font-black tracking-tighter uppercase italic text-[#8b4513]">
             The Loop Diary
           </h1>
           <p className="text-[9px] font-bold opacity-60 uppercase mt-1 italic tracking-widest">
-            Digital Passport by Cien
+            Digital Passport
           </p>
         </div>
         <div className="flex gap-4 items-center">
-          {/* <button
-            onClick={exportImage}
-            className="p-2 bg-[#4a3a2a] text-[#f4f1ea] rounded-full shadow-lg active:scale-90 transition-all"
-            title="Lưu thành ảnh"
-          >
-            <Download size={20} />
-          </button> */}
           <div className="relative">
             <Award
               size={32}
@@ -270,47 +231,6 @@ const VintageDiary = () => {
           </motion.div>
         )}
       </AnimatePresence>
-      <AnimatePresence>
-        {exportImageUri && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/95 z-[250] flex flex-col p-6 overflow-y-auto"
-          >
-            <div className="flex justify-between items-center mb-6 shrink-0">
-              <h2 className="text-white font-black italic text-sm uppercase tracking-widest">
-                💡 Nhấn giữ vào ảnh, chọn "Lưu hình ảnh/Save Image"
-              </h2>
-              <button
-                onClick={() => setExportImageUri(null)}
-                className="p-2 bg-white/10 rounded-full text-white"
-              >
-                <X size={24} />
-              </button>
-            </div>
-            <div className="flex-1 flex flex-col items-center">
-              <div className="w-full max-w-sm shadow-2xl rounded-sm overflow-hidden border-4 border-white/20">
-                <img
-                  src={exportImageUri}
-                  alt="Hà Giang Diary Export"
-                  className="w-full h-auto"
-                />
-              </div>
-            </div>
-            <div className="h-10 shrink-0" />
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {isExporting && (
-        <div className="fixed inset-0 bg-black/60 z-[300] flex flex-col items-center justify-center">
-          <div className="w-12 h-12 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin mb-4" />
-          <p className="text-white font-black italic animate-pulse">
-            ĐANG KẾT TINH KÝ ỨC...
-          </p>
-        </div>
-      )}
     </div>
   )
 }
