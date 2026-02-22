@@ -79,28 +79,26 @@ const VintageDiary = () => {
     if (diaryRef.current === null) return
 
     try {
-      const originalHeight = diaryRef.current.scrollHeight
-      const originalWidth = diaryRef.current.scrollWidth
-
       const dataUrl = await toPng(diaryRef.current, {
         cacheBust: true,
-        quality: 1,
-        height: originalHeight,
-        width: originalWidth,
-        style: {
-          overflow: 'visible',
-          height: `${originalHeight}px`,
-          width: `${originalWidth}px`,
+        pixelRatio: 2,
+        skipFonts: false,
+        filter: (node) => {
+          if (node.tagName === 'IMG') {
+            node.setAttribute('crossOrigin', 'anonymous')
+          }
+          return true
         },
       })
 
       const link = document.createElement('a')
-      link.download = `HaGiang-Diary-2026.png`
+      link.download = `HG-Diary-${Date.now()}.png`
       link.href = dataUrl
+      document.body.appendChild(link)
       link.click()
+      document.body.removeChild(link)
     } catch (err) {
-      console.error('Không thể xuất ảnh dài:', err)
-      alert('Có lỗi khi tạo ảnh dài, bạn thử lại nhé!')
+      console.error('Export error:', err)
     }
   }
 
