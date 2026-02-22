@@ -6,6 +6,46 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { useIncomesQueries } from '../hooks/useIncomeQueries'
 import type { Income } from '../types'
 
+function formatAmountVN(amount: number): string {
+  if (amount >= 1_000_000) {
+    const millions = amount / 1_000_000
+    return `${parseFloat(millions.toFixed(1))}tr`
+  }
+  if (amount >= 1_000) {
+    const thousands = amount / 1_000
+    return `${parseFloat(thousands.toFixed(1))}k`
+  }
+  return amount.toString()
+}
+
+const MemberContributionChips = ({ data }: { data: any }) => {
+  return (
+    <div className="flex flex-wrap gap-3">
+      {data.map((member: any, index: number) => {
+        return (
+          <div
+            key={index}
+            className="relative flex items-center gap-2 bg-white border border-slate-100 pl-2 pr-3 py-1.5 rounded-full shadow-sm active:bg-slate-50 transition-colors"
+          >
+            <span className="absolute text-[10px] font-semibold text-sky-500 -top-1 -left-1">
+              {index + 1}
+            </span>
+            <span className="text-[10px] font-black text-slate-800 border-r border-slate-100 pr-2">
+              {member.paidBy}
+            </span>
+
+            <div className="flex items-center gap-1.5">
+              <span className="text-[10px] font-bold text-green-600 leading-none">
+                {formatAmountVN(member.total)}
+              </span>
+            </div>
+          </div>
+        )
+      })}
+    </div>
+  )
+}
+
 export const IncomePage = () => {
   const { useIncomesList } = useIncomesQueries()
   const { data, isLoading } = useIncomesList()
@@ -18,6 +58,26 @@ export const IncomePage = () => {
   const totalIncome = useMemo(() => {
     return incomes.reduce((sum, item) => sum + item.amount, 0)
   }, [incomes])
+
+  const summarizeByPaidBy = (data: Income[]) => {
+    return data.reduce<any>((acc, item) => {
+      const name = item.paidBy.trim()
+
+      if (!acc[name]) {
+        acc[name] = 0
+      }
+      acc[name] += item.amount
+      return acc
+    }, {})
+  }
+
+  const summarizeSorted = (data: Income[]) => {
+    const grouped = summarizeByPaidBy(data)
+
+    return Object.entries(grouped)
+      .map(([paidBy, total]) => ({ paidBy, total }))
+      .sort((a: any, b: any) => b.total - a.total)
+  }
 
   if (isLoading) {
     return (
@@ -51,7 +111,9 @@ export const IncomePage = () => {
             <Wallet className="w-8 h-8 text-white" />
           </div>
         </div>
-
+        <MemberContributionChips
+          data={summarizeSorted(incomes)}
+        ></MemberContributionChips>
         <div className="space-y-4">
           <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider ml-2">
             Lịch sử thu tiền
