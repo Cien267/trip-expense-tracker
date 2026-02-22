@@ -6,6 +6,8 @@ import {
   CheckSquare,
   Languages,
   Camera,
+  Gamepad,
+  Notebook,
 } from 'lucide-react'
 import { Card } from '@/components/ui/card'
 import { useNavigate } from 'react-router-dom'
@@ -61,6 +63,26 @@ const MorePage = () => {
           icon: <Camera className="w-5 h-5 text-gray-500" />,
           description: 'Ghi lại những bức ảnh retro, vintage đầy hoài niệm',
           route: '/film-editor',
+        },
+        {
+          id: 'passport',
+          title: 'Ha Giang Passport',
+          icon: <Notebook className="w-5 h-5 text-gray-500" />,
+          description:
+            'Đánh dấu những địa điểm đã đi qua vào cuốn hộ chiếu của bạn',
+          route: '/passport',
+        },
+      ],
+    },
+    {
+      groupName: 'Giải trí',
+      items: [
+        {
+          id: 'truth-or-dare',
+          title: 'Truth or Dare',
+          icon: <Gamepad className="w-5 h-5 text-gray-500" />,
+          description: 'Thật hay thách',
+          route: '/truth-or-dare',
         },
       ],
     },

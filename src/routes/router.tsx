@@ -24,6 +24,12 @@ const LanguagePage = lazy(
 const FilmEditorPage = lazy(
   () => import('@/features/film-editor/pages/FilmEditorPage')
 )
+const TruthOrDarePage = lazy(
+  () => import('@/features/games/pages/TruthOrDarePage')
+)
+const PassportPage = lazy(
+  () => import('@/features/passport/pages/PassportPage')
+)
 const NotFoundPage = lazy(() => import('@/pages/NotFoundPage'))
 
 export const router = createBrowserRouter([
@@ -110,6 +116,22 @@ export const router = createBrowserRouter([
     element: (
       <SuspenseWrapper>
         <FilmEditorPage />
+      </SuspenseWrapper>
+    ),
+  },
+  {
+    path: '/passport',
+    element: (
+      <SuspenseWrapper>
+        <PassportPage />
+      </SuspenseWrapper>
+    ),
+  },
+  {
+    path: '/truth-or-dare',
+    element: (
+      <SuspenseWrapper>
+        <TruthOrDarePage />
       </SuspenseWrapper>
     ),
   },
